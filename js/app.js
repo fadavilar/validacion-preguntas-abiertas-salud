@@ -75,7 +75,7 @@
      ============================================================ */
   const SECTIONS = [
     { id:"resumen", num:"01", title:"Resumen ejecutivo", sub:"Lo esencial en 60 segundos", open:true },
-    { id:"busqueda", num:"02", title:"Estrategia de búsqueda", sub:"5 bases identificadas, 4 ejecutadas, ecuaciones y estado", open:false },
+    { id:"busqueda", num:"02", title:"Estrategia de búsqueda", sub:"5 bases ejecutadas, ecuaciones y estado", open:false },
     { id:"estudios", num:"03", title:"Estudios incluidos", sub:"7 estudios a texto completo, con enlace y n de voluntarios", open:false },
     { id:"calidad", num:"04", title:"Evaluación de la calidad", sub:"COSMIN y COREQ, dominio evaluado y calificación", open:false },
     { id:"discusion", num:"05", title:"Síntesis y discusión", sub:"Marco de tres fases, hallazgos y consideraciones éticas", open:false },
@@ -168,7 +168,7 @@
   function renderResumen(){
     const body = document.getElementById("body-resumen");
     body.appendChild(el("p",{},[
-      "Esta revisión de alcance sintetiza la evidencia (2021–2026) sobre una práctica metodológica recurrente en el desarrollo y adaptación de instrumentos de medición en salud: validar preguntas abiertas mediante voluntarios sanos o muestras de población general, antes de aplicar el instrumento a la población de pacientes a la que finalmente está destinado. Tras cribar 200 registros únicos de las 4 bases ejecutadas (Cochrane Library permanece bloqueada por verificación anti-bot), se incluyeron 7 estudios a texto completo, todos indexados en PubMed/MEDLINE."
+      "Esta revisión de alcance sintetiza la evidencia (2021–2026) sobre una práctica metodológica recurrente en el desarrollo y adaptación de instrumentos de medición en salud: validar preguntas abiertas mediante voluntarios sanos o muestras de población general, antes de aplicar el instrumento a la población de pacientes a la que finalmente está destinado. Tras cribar 292 registros únicos de las 5 bases ejecutadas, se incluyeron 7 estudios a texto completo, todos indexados en PubMed/MEDLINE."
     ]));
     body.appendChild(el("div",{class:"selective-box"},[
       el("h4",{},["Conclusión principal"]),
@@ -186,7 +186,7 @@
   function renderBusqueda(){
     const body = document.getElementById("body-busqueda");
     body.appendChild(el("p",{},[
-      "Se identificaron cinco bases pertinentes. Solo PubMed pudo ejecutarse mediante API automatizada; LILACS/BVS, Google Scholar y Embase fueron ejecutadas manualmente por el investigador y sus exportaciones (CSV) fueron cribadas por el documentalista. Cochrane Library permanece bloqueada por verificación anti-bot y queda pendiente de ejecución manual (ver Anexo en la sección de limitaciones)."
+      "Se identificaron y ejecutaron cinco bases pertinentes. Solo PubMed pudo ejecutarse mediante API automatizada; LILACS/BVS, Google Scholar, Embase y Cochrane Library fueron ejecutadas y verificadas por el investigador, y sus exportaciones fueron cribadas por el documentalista con el mismo criterio de elegibilidad. La ecuación de Cochrane tuvo que simplificarse respecto de la originalmente propuesta, ya que la interfaz de búsqueda avanzada no permitía ejecutarla (ver Anexo en la sección de limitaciones)."
     ]));
     DATA.searchStrategy.forEach(s=>{
       const card = el("div",{class:"search-card"});
@@ -490,6 +490,7 @@
      ============================================================ */
   function renderLagunas(){
     const body = document.getElementById("body-lagunas");
+    if(DATA.gapsIntro) body.appendChild(el("p",{},[DATA.gapsIntro]));
     const list = el("ul",{class:"gap-list"});
     DATA.gaps.forEach(g=> list.appendChild(el("li",{},[g])));
     body.appendChild(list);
@@ -507,17 +508,30 @@
     body.appendChild(el("h4",{style:"font-size:.86rem;margin-top:22px"},["Nota de transparencia — 2 estudios de Embase excluidos por fecha"]));
     body.appendChild(el("div",{class:"callout"},[DATA.embaseExcludedNote]));
 
-    if(DATA.manualAnnex.cochranePending){
-      body.appendChild(el("h4",{style:"font-size:.86rem;margin-top:22px"},["Anexo — Cochrane Library (pendiente de ejecución manual)"]));
-      const cp = DATA.manualAnnex.cochranePending;
-      const pre = document.createElement("pre");
-      pre.className = "code-block";
-      pre.textContent = cp.equation;
-      body.appendChild(pre);
-      body.appendChild(el("p",{class:"indicator-source"},[cp.note]));
+    if(DATA.manualAnnex.cochraneEquationChange){
+      body.appendChild(el("h4",{style:"font-size:.86rem;margin-top:22px"},["Anexo — Cochrane Library: ecuación modificada respecto de la propuesta original"]));
+      const cec = DATA.manualAnnex.cochraneEquationChange;
+      const changeWrap = el("div",{class:"table-wrap"});
+      const changeTable = el("table",{class:"data-table", style:"min-width:100%"},[
+        el("thead",{},[ el("tr",{},[ el("th",{},["Ecuación"]), el("th",{},["Texto"]), el("th",{},["Estado"]) ]) ]),
+        el("tbody",{},[
+          el("tr",{},[
+            el("td",{},["Originalmente propuesta"]),
+            el("td",{style:"white-space:normal;max-width:340px;font-size:.8rem"},[cec.original]),
+            el("td",{style:"white-space:normal;max-width:220px;font-size:.78rem;color:var(--text-muted)"},[cec.originalStatus]),
+          ]),
+          el("tr",{},[
+            el("td",{},["Efectivamente ejecutada (modificada)"]),
+            el("td",{style:"white-space:normal;max-width:340px;font-size:.8rem"},[cec.executed]),
+            el("td",{style:"white-space:normal;max-width:220px;font-size:.78rem;color:var(--text-muted)"},[cec.executedStatus]),
+          ]),
+        ]),
+      ]);
+      changeWrap.appendChild(changeTable);
+      body.appendChild(changeWrap);
     }
 
-    body.appendChild(el("h4",{style:"font-size:.86rem;margin-top:22px"},["Anexo — ejecución manual reportada (LILACS/BVS, Google Scholar, Embase)"]));
+    body.appendChild(el("h4",{style:"font-size:.86rem;margin-top:22px"},["Anexo — ejecución de búsquedas reportadas (LILACS/BVS, Google Scholar, Embase, Cochrane Library)"]));
     const tableWrap = el("div",{class:"table-wrap"});
     const table = el("table",{class:"data-table", style:"min-width:100%"},[
       el("thead",{},[ el("tr",{},[ el("th",{},["Base"]), el("th",{},["Ecuación ejecutada"]), el("th",{},["Fecha"]), el("th",{},["N.º de resultados"]), el("th",{},["URL"]) ]) ]),
@@ -534,6 +548,9 @@
     body.appendChild(el("p",{class:"indicator-source", style:"margin-top:8px"},[DATA.manualAnnex.note]));
     if(DATA.manualAnnex.scholarUpdateNote){
       body.appendChild(el("div",{class:"callout", style:"margin-top:10px"},[DATA.manualAnnex.scholarUpdateNote]));
+    }
+    if(DATA.manualAnnex.cochraneUpdateNote){
+      body.appendChild(el("div",{class:"callout", style:"margin-top:10px"},[DATA.manualAnnex.cochraneUpdateNote]));
     }
   }
 
