@@ -8,7 +8,7 @@ window.DATA = {
     title: "Validación de Preguntas Abiertas con Voluntarios Sanos",
     subtitle: "Explorador interactivo de una revisión de alcance sobre el pretesteo de instrumentos de medición en salud con voluntarios sanos y población general, antes de su aplicación en pacientes.",
     framework: "Revisión de alcance · marco PICO",
-    period: "2021–2026 · actualizado 10 sep. 2026",
+    period: "2021–2026 · actualizado 10 sep. 2026 (Google Scholar ampliado a 65 registros)",
     author: "Fabian Dávila Ramírez",
     credentials: "MD, MBA, PhD",
     affiliation: "Universidad de Navarra · Universidad de Bogotá Jorge Tadeo Lozano (Doctorado en Gestión y Modelado de Políticas Públicas)",
@@ -21,10 +21,10 @@ window.DATA = {
   },
 
   stats: [
-    { value: "201", label: "registros identificados", detail: "PubMed 98 · LILACS/BVS 56 · Google Scholar 43 · Embase 4" },
-    { value: "22",  label: "duplicados removidos", detail: "intra-archivo, exportación de LILACS/BVS" },
-    { value: "172", label: "excluidos tras cribado", detail: "119 fuera de dominio · 51 fuera de diseño/población · 2 fuera de fecha" },
-    { value: "7",   label: "estudios incluidos", detail: "100% de PubMed/MEDLINE — ninguno de las otras 3 bases" },
+    { value: "223", label: "registros identificados", detail: "PubMed 98 · LILACS/BVS 56 · Google Scholar 65 · Embase 4" },
+    { value: "23",  label: "duplicados removidos", detail: "22 intra-archivo (LILACS/BVS) + 1 entre Google Scholar y Embase" },
+    { value: "193", label: "excluidos tras cribado", detail: "112 fuera de dominio · 43 fuera de diseño/población · 34 LILACS sin desagregar · 4 Embase" },
+    { value: "7",   label: "estudios incluidos", detail: "100% de PubMed/MEDLINE — ninguno de las otras bases ejecutadas" },
   ],
 
   pico: {
@@ -47,21 +47,28 @@ window.DATA = {
       status: "Ejecutada manualmente por el investigador",
       n: "56 (34 únicos)",
       equation: '(cuestionario OR escala OR "instrumento") AND (voluntario*) AND (Piloto OR validacion OR pretest)\nFiltro de fecha 2021–2026 aplicado en la interfaz de bvsalud.org',
-      note: "22 duplicados intra-archivo removidos (mismo DOI/título exportado 2–5 veces) antes del cribado; no se hallaron duplicados con las demás bases.",
+      note: "22 duplicados intra-archivo removidos (mismo DOI/título exportado 2–5 veces) antes del cribado; fecha exacta de ejecución no reportada por el usuario.",
     },
     {
       db: "Google Scholar",
-      status: "Ejecutada manualmente por el investigador",
-      n: "43",
-      equation: '"healthy volunteers" "open-ended questions" (questionnaire OR "measurement instrument") (validation OR pretesting OR "cognitive interview")',
-      note: "La exportación no incluye resúmenes (solo autor, título, revista, año y editorial); el cribado se realizó exclusivamente por título.",
+      status: "Ejecutada manualmente por el investigador — actualizada 10 sep. 2026",
+      n: "65 exportados (de ~190 recuperables)",
+      equation: '"healthy volunteers" AND "open-ended questions" AND (questionnaire OR "measurement instrument" OR escale) AND (validation OR "face validity" OR "Facial validity" OR pretesting OR "cognitive interview")\nFiltro de fecha 2021–2026 aplicado en la interfaz (as_ylo=2021&as_yhi=2026)',
+      note: "Búsqueda avanzada ejecutada directamente en scholar.google.com, que resuelve la discrepancia de URL de la versión anterior del informe. Recupera ~190 resultados paginables en total; esta actualización solo cribó una exportación parcial de 65 registros (1 de ellos duplicado exacto con un registro de Embase). El cribado de los ~125 registros restantes queda pendiente. La cifra de \"~560 resultados\" que a veces muestra la interfaz de Google Scholar es una estimación inflada y no se usa como referencia.",
     },
     {
       db: "Embase",
-      status: "Ejecutada manualmente (archivo de exportación)",
+      status: "Ejecutada manualmente (archivo de exportación) — quinta base, añadida por iniciativa del investigador",
       n: "4",
       equation: "('healthy volunteer*' OR 'healthy participant*') AND ('cognitive interview*' OR 'open-ended question*' OR 'think aloud') AND (questionnaire* OR 'measurement instrument*') AND (validat* OR pretest*)",
-      note: "Sin filtro de fecha explícito — a diferencia de las otras 3 bases. Esto permitió detectar 2 registros anteriores a 2021 (ver sección de limitaciones y transparencia).",
+      note: "No formaba parte de la estrategia original de 4 bases. Sin filtro de fecha explícito — a diferencia de las demás. Esto permitió detectar 2 registros anteriores a 2021 (ver sección de limitaciones y transparencia).",
+    },
+    {
+      db: "Cochrane Library",
+      status: "NO ejecutada — bloqueada por verificación anti-bot (Cloudflare), pendiente de ejecución manual",
+      n: "Pendiente",
+      equation: '("healthy volunteer*" OR "healthy participant*" OR "general population" OR "lay panel" OR "community sample") AND ("cognitive interview*" OR "cognitive debriefing" OR "think aloud" OR "open-ended question*") AND (questionnaire* OR "measurement instrument*" OR "patient-reported outcome measure*")\nBuscar en Title Abstract Keyword, filtro 2021–2026',
+      note: "Confirmado bloqueado tanto con WebFetch como con navegador interactivo (mensaje \"Verificación de seguridad en curso\"). Ecuación lista para que el investigador la ejecute manualmente.",
     },
   ],
 
@@ -69,21 +76,23 @@ window.DATA = {
     identifiedByDb: [
       { label: "PubMed/MEDLINE", n: 98 },
       { label: "LILACS/BVS", n: 56 },
-      { label: "Google Scholar", n: 43 },
+      { label: "Google Scholar", n: 65 },
       { label: "Embase", n: 4 },
     ],
-    identifiedTotal: 201,
+    identifiedTotal: 223,
     removedBreakdown: [
       { label: "Duplicados intra-archivo (LILACS/BVS)", n: 22 },
+      { label: "Duplicado exacto Google Scholar × Embase (Poowaruttanawiwit et al., 2025)", n: 1 },
     ],
-    removedTotal: 22,
-    screenedTotal: 179,
+    removedTotal: 23,
+    screenedTotal: 200,
     excludedReasons: [
-      "Fuera de dominio — no es un estudio de validación metodológica de un instrumento: 119",
-      "Fuera de diseño/población — no cumple la secuencia voluntario sano→paciente: 51",
-      "Fuera de rango de fechas 2021–2026 (2 registros de Embase): 2",
+      "Fuera de dominio (PubMed 60 + Google Scholar 52): 112",
+      "Fuera de diseño/población (PubMed 31 + Google Scholar 12): 43",
+      "LILACS/BVS — motivo no desagregado en esta actualización: 34",
+      "Embase (2 de ellos por quedar fuera del rango de fechas 2021–2026): 4",
     ],
-    excludedTotal: 172,
+    excludedTotal: 193,
     includedByDb: [
       { label: "PubMed/MEDLINE", n: 7 },
       { label: "LILACS/BVS", n: 0 },
@@ -91,7 +100,7 @@ window.DATA = {
       { label: "Embase", n: 0 },
     ],
     includedTotal: 7,
-    citation: "Adaptado de Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams. Campbell Systematic Reviews, 18, e1230. https://doi.org/10.1002/cl2.1230",
+    citation: "Adaptado de Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams. Campbell Systematic Reviews, 18, e1230. https://doi.org/10.1002/cl2.1230 — Cochrane Library queda fuera de este flujo (bloqueada, pendiente de ejecución manual; ver Estrategia de búsqueda).",
   },
 
   /* pretestN = n de voluntarios sanos/población general en la fase de pretesteo con preguntas abiertas
@@ -201,27 +210,35 @@ window.DATA = {
   ],
 
   limitations: [
+    "Cochrane Library no pudo ejecutarse en ningún momento por bloqueo anti-bot (Cloudflare); su ecuación queda pendiente de ejecución manual por el investigador (ver Anexo), por lo que este informe es susceptible de ampliarse si esos resultados se incorporan más adelante.",
     "La extracción de datos y la evaluación de calidad de los 7 estudios incluidos se realizaron a partir del resumen indexado en PubMed y no del texto completo, dado que no se dispuso de acceso a texto completo; algunos matices metodológicos podrían no estar reflejados con precisión.",
     "La ecuación de PubMed tuvo que ampliarse desde el término estricto \"healthy volunteer*\" hacia sinónimos como \"general population\", \"community sample\" y \"lay panel\"; las ecuaciones de LILACS/BVS y Google Scholar, ejecutadas manualmente, usaron una sintaxis más simple y no necesariamente los mismos sinónimos, lo que limita la comparabilidad directa entre bases.",
     "Los límites de la herramienta de búsqueda de PubMed utilizada (máximo 5 comodines y 20 operadores booleanos por consulta) obligaron a simplificar la ecuación original en varias iteraciones.",
-    "La exportación de Google Scholar (43 registros) no incluye resúmenes, por lo que el cribado de esa fuente se realizó exclusivamente por título; no puede descartarse por completo que algún registro relevante haya sido excluido erróneamente por esta limitación, aunque el patrón temático observado (predominantemente psicodélicos, terapias en salud mental y epidemiología) hace poco probable que se haya perdido un estudio claramente pertinente.",
-    "Existe una discrepancia no resuelta entre la ecuación de Google Scholar reportada verbalmente por el usuario y la URL de resultados que compartió, la cual corresponde a una búsqueda distinta; se documenta aquí sin intentar reconciliarla unilateralmente (ver Anexo).",
+    "La exportación de Google Scholar (65 registros) no incluye resúmenes, por lo que el cribado de esa fuente se realizó exclusivamente por título; no puede descartarse por completo que algún registro relevante haya sido excluido erróneamente por esta limitación, aunque el patrón temático observado (predominantemente protocolos/ensayos en voluntarios sanos, validaciones de cuestionarios directamente en pacientes o población general sin fase comparativa previa, y revisiones de adherencia/satisfacción en investigación clínica) hace poco probable que se haya perdido un estudio claramente pertinente.",
+    "La discrepancia señalada en la versión previa de este informe entre la ecuación de Google Scholar reportada por el usuario y la URL de resultados compartida (que correspondía a una búsqueda simple de Google, no a Google Scholar) quedó resuelta en esta actualización: el investigador ejecutó la búsqueda avanzada directamente en scholar.google.com y aportó una nueva exportación.",
     "La ecuación de Embase, recuperada del archivo de exportación, no incluyó un filtro de fecha explícito a diferencia de las demás bases; esto permitió detectar 2 registros fuera del rango 2021–2026, pero también implica que la comparabilidad de la cobertura temporal de Embase frente a las otras tres bases es limitada.",
+    "No se dispone de fecha exacta de ejecución para las búsquedas de LILACS/BVS, Google Scholar ni Embase (el usuario no la reportó); se documenta como \"no reportada\" en el Anexo en vez de asumirla, conforme a la regla de citación de este informe.",
+    "La búsqueda avanzada de Google Scholar recupera aproximadamente 190 resultados paginables en total, pero esta actualización cribó únicamente una exportación parcial de 65 de esos registros; el cribado de los ~125 registros restantes queda pendiente para una futura actualización, y no puede descartarse que algún registro elegible se encuentre entre ellos. La cifra de \"~560 resultados\" que en algún momento mostró la propia interfaz de Google Scholar para esta búsqueda es, según el comportamiento observado de esa interfaz (variación entre consultas idénticas), una estimación inflada que no se usa como cifra de referencia en este informe.",
   ],
 
   manualAnnex: {
+    cochranePending: {
+      equation: '("healthy volunteer*" OR "healthy participant*" OR "general population" OR "lay panel" OR "community sample") AND ("cognitive interview*" OR "cognitive debriefing" OR "think aloud" OR "open-ended question*") AND (questionnaire* OR "measurement instrument*" OR "patient-reported outcome measure*")',
+      note: "Buscar en Title Abstract Keyword, filtro 2021–2026. Bloqueada por verificación anti-bot (Cloudflare); confirmado con WebFetch y con navegador interactivo (mensaje \"Verificación de seguridad en curso\"). Pendiente de ejecución manual por el investigador.",
+    },
     rows: [
-      { db: "LILACS/BVS", equation: '(cuestionario OR escala OR "instrumento") AND (voluntario*) AND (Piloto OR validacion OR pretest)', n: "56 (34 únicos)", url: "pesquisa.bvsalud.org/portal/" },
-      { db: "Google Scholar", equation: 'Reportada por el usuario: "healthy volunteers" "open-ended questions" (questionnaire OR "measurement instrument") (validation OR pretesting OR "cognitive interview")', n: "43", url: "scholar.google.com/scholar?q=...&as_ylo=2021&as_yhi=2026" },
-      { db: "Embase", equation: "Recuperada del archivo EMBASE.csv (no reportada verbalmente): ('healthy volunteer*' OR 'healthy participant*') AND ('cognitive interview*' OR 'open-ended question*' OR 'think aloud') AND (questionnaire* OR 'measurement instrument*') AND (validat* OR pretest*)", n: "4 (verificado)", url: "No disponible — Embase requiere acceso institucional y no genera una URL de resultados públicamente estable" },
+      { db: "LILACS/BVS", equation: '(cuestionario OR escala OR "instrumento") AND (voluntario*) AND (Piloto OR validacion OR pretest)', fecha: "No reportada por el usuario", n: "56 (34 únicos)", url: "pesquisa.bvsalud.org/portal/" },
+      { db: "Google Scholar", equation: '"healthy volunteers" AND "open-ended questions" AND (questionnaire OR "measurement instrument" OR escale) AND (validation OR "face validity" OR "Facial validity" OR pretesting OR "cognitive interview"); filtro 2021–2026 (as_ylo=2021&as_yhi=2026)', fecha: "No reportada por el usuario", n: "65 exportados (de ~190 recuperables)", url: "scholar.google.com/scholar?hl=es&as_sdt=0,5&as_ylo=2021&as_yhi=2026&as_vis=1&q=..." },
+      { db: "Embase", equation: "Recuperada del archivo EMBASE.csv (no reportada verbalmente): ('healthy volunteer*' OR 'healthy participant*') AND ('cognitive interview*' OR 'open-ended question*' OR 'think aloud') AND (questionnaire* OR 'measurement instrument*') AND (validat* OR pretest*)", fecha: "No reportada por el usuario", n: "4 (verificado)", url: "No disponible — Embase requiere acceso institucional y no genera una URL de resultados públicamente estable" },
     ],
-    note: "Los campos no proporcionados por el usuario no se completan con datos supuestos, conforme a la regla de citación de este informe.",
+    note: "Los campos no proporcionados por el usuario no se completan con datos supuestos, conforme a la regla de citación de este informe. Embase no formaba parte de la estrategia original de 4 bases — fue añadida por iniciativa del investigador.",
+    scholarUpdateNote: "Actualización Google Scholar (10 sep. 2026): la discrepancia de la versión previa (la URL compartida entonces correspondía a una búsqueda simple de Google, no a Google Scholar) quedó resuelta — el investigador confirmó y ejecutó la búsqueda avanzada citada arriba directamente en scholar.google.com. Esa búsqueda recupera ~190 resultados paginables en total (verificado por paginación exhaustiva); el investigador aportó una exportación de 65 de esos ~190 registros, de los cuales 1 resultó duplicado exacto con un registro de Embase (\"Efficacy of a device for training metered dose inhaler breathing proficiency...\", Poowaruttanawiwit et al., 2025). El cribado de los ~125 registros restantes queda pendiente para una futura actualización.",
   },
 
   embaseExcludedNote: "Dos registros de Embase quedaron fuera del rango de fechas 2021–2026: Gustafson et al. (2020, PMID 32326886) validó el State-Trait Anxiety Inventory en danés mediante entrevista cognitiva con 12 voluntarios sanos, en paralelo a su aplicación en pacientes con cribado cervical anormal; y Lo Re et al. (2012, PMID 23256756) desarrolló el cuestionario I-CAM-G mediante pretest y entrevistas cognitivas con 16 voluntarios sanos, aplicado luego en pacientes con cáncer de mama y en población general. Ambos son metodológicamente afines a esta revisión pero anteriores al periodo fijado; se documentan aquí por transparencia, sin incluirlos en la síntesis.",
 
   methodology: {
-    databases: ["PubMed/MEDLINE", "LILACS/BVS", "Google Scholar", "Embase", "Cochrane Library (consultada, sin resultados relevantes)"],
+    databases: ["PubMed/MEDLINE", "LILACS/BVS", "Google Scholar", "Embase (quinta base, añadida por el investigador)", "Cochrane Library (bloqueada por verificación anti-bot, pendiente de ejecución manual)"],
     qualityTools: ["COSMIN — riesgo de sesgo, validez de contenido de PROM", "COREQ — Consolidated Criteria for Reporting Qualitative Research"],
   },
 };
